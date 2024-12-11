@@ -33,6 +33,11 @@ body {
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
+  color: #e0ffff;
+}
+
+h2 {
+  color: #535bf2;
 }
 
 button {
@@ -54,24 +59,62 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-.field {
-  height: 150px;
-  width: 150px;
-  border: 2px solid white;
-  font-size: 100px;
+.game-container {
+  text-align: center;
+  margin: 20px;
+  color: #333; /* Darker text for better readability */
 }
 
-.field:hover {
-  cursor: pointer;
+.scoreboard {
+  margin-bottom: 20px;
+  color: #1e90ff; /* Bright blue */
+  font-weight: bold;
 }
 
 .board {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(3, 100px);
+  grid-gap: 10px;
+  justify-content: center;
+  margin: 20px auto;
 }
 
-.score {
-  font-weight: 700;
+.field {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: 24px;
-  color: #747bff;
+  border: 2px solid #4caf50; /* Bright green border */
+  background-color: #f0f8ff; /* Light blue background */
+  cursor: pointer;
+  color: #333; /* Dark text for player symbols */
+  transition: all 0.3s ease;
+}
+
+.field:hover {
+  background-color: #e0ffff; /* Lighter blue on hover */
+}
+
+.field.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+  background-color: #dcdcdc; /* Greyed-out for disabled fields */
+}
+
+.play-again-button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #ff6347; /* Bright coral */
+  color: #fff; /* White text */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.play-again-button:hover {
+  background-color: #ff4500; /* Brighter coral on hover */
 }

@@ -1,104 +1,69 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { PLAYER } from "./constants";
 
 import Score from "./components/Score";
+import Board from "./components/Board";
+import GameOver from "./components/GameOver";
 import "./App.css";
 
-function App() {
+const Game = () => {
   const [activePlayer, setActivePlayer] = useState(PLAYER.TWO);
-  const [boardValues, setBoardValues] = useState([
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-  ]);
+  const [boardValues, setBoardValues] = useState(Array(9).fill(""));
   const [gameOver, setGameOver] = useState(false);
   const [winner, setWinner] = useState("");
   const [scores, setScores] = useState({
     [PLAYER.ONE]: 0,
     [PLAYER.TWO]: 0,
-    DRAW: 0, // Added to track the number of draws
+    DRAW: 0,
   });
 
   const handleFieldClick = (position) => {
-    const boardValuesCopy = [...boardValues];
-    if (!boardValuesCopy[position] && !gameOver) {
-      boardValuesCopy[position] = activePlayer;
-      setBoardValues(boardValuesCopy);
+    if (!boardValues[position] && !gameOver) {
+      setBoardValues((prev) => {
+        const newBoard = [...prev];
+        newBoard[position] = activePlayer;
+        return newBoard;
+      });
     }
   };
 
   const checkIfGameOver = () => {
-    const filledFields = boardValues.filter((value) => value !== "");
+    const winPatterns = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
 
-    if (
-      (boardValues[0] &&
-        boardValues[1] &&
-        boardValues[2] &&
-        boardValues[0] === boardValues[1] &&
-        boardValues[0] === boardValues[2]) ||
-      (boardValues[3] &&
-        boardValues[4] &&
-        boardValues[5] &&
-        boardValues[3] === boardValues[4] &&
-        boardValues[3] === boardValues[5]) ||
-      (boardValues[6] &&
-        boardValues[7] &&
-        boardValues[8] &&
-        boardValues[6] === boardValues[7] &&
-        boardValues[6] === boardValues[8]) ||
-      (boardValues[0] &&
-        boardValues[3] &&
-        boardValues[6] &&
-        boardValues[0] === boardValues[3] &&
-        boardValues[0] === boardValues[6]) ||
-      (boardValues[1] &&
-        boardValues[4] &&
-        boardValues[7] &&
-        boardValues[1] === boardValues[4] &&
-        boardValues[1] === boardValues[7]) ||
-      (boardValues[2] &&
-        boardValues[5] &&
-        boardValues[8] &&
-        boardValues[2] === boardValues[5] &&
-        boardValues[2] === boardValues[8]) ||
-      (boardValues[0] &&
-        boardValues[4] &&
-        boardValues[8] &&
-        boardValues[0] === boardValues[4] &&
-        boardValues[0] === boardValues[8]) ||
-      (boardValues[2] &&
-        boardValues[4] &&
-        boardValues[6] &&
-        boardValues[2] === boardValues[4] &&
-        boardValues[2] === boardValues[6])
-    ) {
-      setGameOver(true);
-      setWinner(activePlayer);
+    for (const [a, b, c] of winPatterns) {
+      if (
+        boardValues[a] &&
+        boardValues[a] === boardValues[b] &&
+        boardValues[a] === boardValues[c]
+      ) {
+        setGameOver(true);
+        setWinner(activePlayer);
+        setScores((prev) => ({
+          ...prev,
+          [activePlayer]: prev[activePlayer] + 1,
+        }));
+        return;
+      }
+    }
 
-      // Update scores for the winner
-      setScores((prevScores) => ({
-        ...prevScores,
-        [activePlayer]: prevScores[activePlayer] + 1,
-      }));
-    } else if (filledFields.length === 9) {
+    if (boardValues.every((value) => value !== "")) {
       setGameOver(true);
       setWinner("DRAW");
-
-      // Update scores for a draw
-      setScores((prevScores) => ({
-        ...prevScores,
-        DRAW: prevScores.DRAW + 1,
+      setScores((prev) => ({
+        ...prev,
+        DRAW: prev.DRAW + 1,
       }));
     } else {
-      setActivePlayer((prevState) =>
-        prevState === PLAYER.ONE ? PLAYER.TWO : PLAYER.ONE
-      );
+      setActivePlayer((prev) => (prev === PLAYER.ONE ? PLAYER.TWO : PLAYER.ONE));
     }
   };
 
@@ -107,42 +72,24 @@ function App() {
   }, [boardValues]);
 
   const playAgain = () => {
-    setBoardValues(["", "", "", "", "", "", "", "", ""]);
+    setBoardValues(Array(9).fill(""));
     setActivePlayer(PLAYER.TWO);
     setGameOver(false);
     setWinner("");
   };
 
   return (
-    <div>
+    <div className="game-container">
       <Score scores={scores} />
       <h1>Tic Tac Toe</h1>
-      <div className="board">
-        {boardValues.map((value, index) => (
-          <div
-            key={index}
-            className="field"
-            onClick={() => handleFieldClick(index)}
-          >
-            {value}
-          </div>
-        ))}
-      </div>
-      {gameOver && (
-        <div>
-          <h2>Game over</h2>
-          {winner === "DRAW" ? (
-            <h2>It's a draw</h2>
-          ) : (
-            <h2>
-              Winner is player: <b>{winner}</b>
-            </h2>
-          )}
-          <button onClick={playAgain}>PLAY AGAIN?</button>
-        </div>
-      )}
+      <Board
+        boardValues={boardValues}
+        handleFieldClick={handleFieldClick}
+        gameOver={gameOver}
+      />
+      {gameOver && <GameOver winner={winner} playAgain={playAgain} />}
     </div>
   );
-}
+};
 
-export default App;
+export default Game;
