@@ -1,13 +1,14 @@
-import { PLAYER } from "../constants";
+import React from "react";
 
-const Score = ({ scores }) => (
-  
-  <div className="scoreboard">
-    <h2>Scoreboard</h2>
-    <div>Player 1 (X): {scores[PLAYER.ONE]} wins</div>
-    <div>Player 2 (O): {scores[PLAYER.TWO]} wins</div>
-    <div>Draws: {scores.DRAW}</div>
-  </div>
-);
+const Score = ({ scores }) => {
+  return (
+    <div className="scoreboard">
+      <h2>SCOREBOARD</h2>
+      <div className="score">
+        Player 1 (X): {scores.X} - {scores.O} Player 2 (O)
+      </div>
+    </div>
+  );
+};
 
 export default Score;

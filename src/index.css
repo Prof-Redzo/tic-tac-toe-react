@@ -38,9 +38,11 @@ h1 {
 
 h2 {
   color: #535bf2;
+  margin-left: 30px;
 }
 
 button {
+  margin-left: 40px;
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
@@ -60,41 +62,54 @@ button:focus-visible {
 }
 
 .game-container {
-  text-align: center;
-  margin: 20px;
-  color: #333; /* Darker text for better readability */
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  justify-content: center; /* Center items vertically */
+  align-items: center; /* Center items horizontally */
+  height: 100vh; /* Full viewport height */
+  width: 100vw; /* Full viewport width */
+  background-color: #e8f5ff; /* Light blue background */
+  margin: 0;
 }
 
 .scoreboard {
-  margin-bottom: 20px;
-  color: #1e90ff; /* Bright blue */
+  margin-bottom: 20px; /* Space between the scoreboard and the board */
+  background-color: #ffffff; /* White background for clarity */
+  padding: 10px 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  font-size: 1.2rem;
   font-weight: bold;
+  color: #333; /* Dark text for readability */
 }
 
 .board {
   display: grid;
-  grid-template-columns: repeat(3, 100px);
-  grid-gap: 10px;
-  justify-content: center;
-  margin: 20px auto;
+  grid-template-columns: repeat(3, 100px); /* 3 columns of equal size */
+  gap: 10px; /* Space between grid items */
+  background-color: #ffffff; /* White background for the board */
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Subtle shadow */
 }
 
 .field {
-  width: 100px;
-  height: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 24px;
-  border: 2px solid #4caf50; /* Bright green border */
-  background-color: #f0f8ff; /* Light blue background */
+  width: 100px;
+  height: 100px;
+  background-color: #f9f9f9; /* Light gray for fields */
+  border: 1px solid #ddd; /* Light border for separation */
+  font-size: 2rem;
+  font-weight: bold;
+  color: #555; /* Text color */
   cursor: pointer;
-  color: #333; /* Dark text for player symbols */
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease;
 }
 
 .field:hover {
-  background-color: #e0ffff; /* Lighter blue on hover */
+  background-color: #e0f7fa; /* Light blue hover effect */
 }
 
 .field.disabled {
